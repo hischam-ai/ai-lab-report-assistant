@@ -10,3 +10,5 @@ wheels/
 .venv
 # Secrets
 .env
+# Generated reports
+experimentvergleich.pdf
