@@ -32,5 +32,9 @@ def validate_measurement_data(df):
 
     if len(df) < 4:
         return False, "Es werden mindestens 4 gültige Messpunkte benötigt."
-
+    if df["Substrat"].nunique() < 2:
+        return False, (
+            "Es werden mindestens 2 unterschiedliche "
+            "Substratkonzentrationen benötigt."
+        )
     return True, None
