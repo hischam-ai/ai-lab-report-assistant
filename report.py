@@ -368,66 +368,63 @@ def create_pdf_report(
                 )
 
         elements.append(Spacer(1, 0.55 * cm))
+        replicate_table_data = None
+        replicate_table = None
         if replicate_precision_df is not None and not replicate_precision_df.empty:
      
 
-         replicate_table_data = [
-        [
-            "Substrat",
-            "Anzahl",
-            "Mittelwert",
-            "Standardabw.",
-            "CV (%)",
-        ]
-    ]
-
-    for _, row in replicate_precision_df.iterrows():
-        replicate_table_data.append(
-            [
-                f"{row['Substrat']:.2f}",
-                str(int(row["Anzahl Messungen"])),
-                f"{row['Mittelwert']:.3f}",
-                f"{row['Standardabweichung']:.3f}",
-                f"{row['CV (%)']:.1f}",
+            replicate_table_data = [
+                ["Substrat", "Anzahl", "Mittelwert", "Standardabw.", "CV (%)"]
             ]
+
+            for _, row in replicate_precision_df.iterrows():
+                replicate_table_data.append(
+                    [
+                        f"{row['Substrat']:.2f}",
+                        str(int(row["Anzahl Messungen"])),
+                        f"{row['Mittelwert']:.3f}",
+                        f"{row['Standardabweichung']:.3f}",
+                        f"{row['CV (%)']:.1f}",
+                    ]
+                )
+            print("PDF-TABELLENDATEN:", repr(replicate_table_data))
+            replicate_table = Table(
+                replicate_table_data,
+                colWidths=[2.4 * cm, 2.2 * cm, 2.7 * cm, 3.2 * cm, 2.0 * cm],
+            )
+
+            replicate_table.setStyle(
+                TableStyle(
+                    [
+                        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E8EEF7")),
+                        ("FONTNAME", (0, 0), (-1, -1), font_name),
+                        ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+                        ("ALIGN", (1, 1), (-1, -1), "CENTER"),
+                        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                        ("TOPPADDING", (0, 0), (-1, -1), 6),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+                    ]
+                )
+            )
+
+    if replicate_table is not None:
+        elements.append(
+            KeepTogether(
+                [
+                    Paragraph("Präzision der Replikate", styles["Heading2"]),
+                    Spacer(1, 0.25 * cm),
+                    replicate_table,
+                ]
+            )
         )
+        elements.append(Spacer(1, 0.55 * cm))
+        if replicate_precision_comments:
+            for comment in replicate_precision_comments:
+                elements.append(
+                Paragraph(f"• {comment}", styles["BodyText"])
+            )
 
-    replicate_table = Table(
-        replicate_table_data,
-        colWidths=[2.4 * cm, 2.2 * cm, 2.7 * cm, 3.2 * cm, 2.0 * cm],
-    )
-
-    replicate_table.setStyle(
-        TableStyle(
-            [
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E8EEF7")),
-                ("FONTNAME", (0, 0), (-1, -1), font_name),
-                ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
-                ("ALIGN", (1, 1), (-1, -1), "CENTER"),
-                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ("TOPPADDING", (0, 0), (-1, -1), 6),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-            ]
-        )
-    )
-
-    elements.append(
-    KeepTogether(
-        [
-            Paragraph("Präzision der Replikate", styles["Heading2"]),
-            Spacer(1, 0.25 * cm),
-            replicate_table,
-        ]
-    )
-)
-    elements.append(Spacer(1, 0.55 * cm))
-    if replicate_precision_comments:
-        for comment in replicate_precision_comments:
-            elements.append(
-            Paragraph(f"• {comment}", styles["BodyText"])
-        )
-
-    elements.append(Spacer(1, 0.55 * cm))
+        elements.append(Spacer(1, 0.55 * cm))
 
     if r2 >= 0.98:
         fit_text = "eine sehr gute Modellanpassung"
@@ -444,41 +441,43 @@ def create_pdf_report(
         quality_text = "Die Datenqualität sollte vor einer abschließenden Interpretation kritisch geprüft werden."
     replicate_conclusion = ""
 
-    if  replicate_precision_comments:
+    if replicate_precision_df is not None and not replicate_precision_df.empty:
+        replicate_conclusion = ""
+
+    if replicate_precision_df is not None and not replicate_precision_df.empty:
         replicate_conclusion = (
             "Die Replikat-Analyse zeigt erhöhte Streuungen bei einzelnen "
             "Substratkonzentrationen. Die Reproduzierbarkeit dieser Messungen "
             "sollte daher überprüft und gegebenenfalls durch weitere "
             "Wiederholungsmessungen verbessert werden. "
         )
-        conclusion_text = (
-            f"Die Michaelis-Menten-Auswertung zeigt {fit_text} "
-            f"mit R² = {r2:.4f}. "
-            f"Die geschätzten Parameter betragen Vmax = {vmax:.2f} "
-            f"und Km = {km:.2f}. "
+
+    conclusion_text = (
+        f"Die Michaelis-Menten-Auswertung zeigt {fit_text} "
+        f"mit R² = {r2:.4f}. "
+        f"Die geschätzten Parameter betragen Vmax = {vmax:.2f} "
+        f"und Km = {km:.2f}. "
         f"{quality_text} "
         f"{replicate_conclusion}"
         "Zusätzliche Messpunkte im Bereich um Km können die "
         "Parameterschätzung weiter verbessern."
-        )
-
-        elements.append(Paragraph("Fazit", styles["Heading2"]))
-
-
-
-        elements.append(
-                Paragraph(
-                    conclusion_text,
-                    styles["BodyText"],
-                )
     )
 
-        document.build(
+    elements.append(Paragraph("Fazit", styles["Heading2"]))
+
+    elements.append(
+        Paragraph(
+            conclusion_text,
+            styles["BodyText"],
+        )
+    )
+
+    document.build(
         elements,
         onFirstPage=add_header_and_page_number,
         onLaterPages=add_header_and_page_number,
     )
 
-        pdf_bytes = buffer.getvalue()
-        buffer.close()
-        return pdf_bytes
+    pdf_bytes = buffer.getvalue()
+    buffer.close()
+    return pdf_bytes

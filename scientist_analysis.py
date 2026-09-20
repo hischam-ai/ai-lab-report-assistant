@@ -88,6 +88,7 @@ def build_scientific_assessment(
         )
 
     recommendations.extend(measurement_recommendations)
+    high_cv_replicates = replicate_precision_df.iloc[0:0]
     if not replicate_precision_df.empty:
         high_cv_replicates = replicate_precision_df[
         replicate_precision_df["CV (%)"] >= 10

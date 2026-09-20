@@ -29,7 +29,11 @@ def validate_measurement_data(df):
 
     if (df["Geschwindigkeit"] < 0).any():
         return False, "Die Reaktionsgeschwindigkeit darf keine negativen Werte enthalten."
-
+    if (df["Geschwindigkeit"] == 0).all():
+        return False, (
+        "Alle Reaktionsgeschwindigkeiten sind 0. "
+        "Eine Michaelis-Menten-Auswertung ist damit nicht möglich."
+    )
     if len(df) < 4:
         return False, "Es werden mindestens 4 gültige Messpunkte benötigt."
     if df["Substrat"].nunique() < 2:

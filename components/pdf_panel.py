@@ -2,6 +2,7 @@ from io import BytesIO
 
 import pandas as pd
 import streamlit as st
+import traceback
 
 from report import create_pdf_report
 
@@ -26,12 +27,13 @@ def show_pdf_download(
 ) -> None:
     """Erstellt den PDF-Bericht und zeigt den Download-Button an."""
 
-    pdf_report = create_pdf_report(
-        df,
-        vmax,
-        km,
-        r2,
-        plot_image,
+    try:
+        pdf_report = create_pdf_report(
+            df,
+            vmax,
+            km,
+            r2,
+            plot_image,
         lineweaver_image,
         project_name,
         sample_name,
@@ -45,7 +47,12 @@ def show_pdf_download(
         replicate_precision_comments,
     
     )
+        print("PDF-RÜCKGABE:", type(pdf_report), len(pdf_report) if pdf_report is not None else None)
 
+    except Exception:
+        st.error("Fehler beim Erstellen des PDF-Berichts:")
+        st.code(traceback.format_exc())
+        return
     st.download_button(
         label="📄 PDF-Bericht herunterladen",
         data=pdf_report,
