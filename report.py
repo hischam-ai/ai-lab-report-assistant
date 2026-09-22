@@ -441,8 +441,6 @@ def create_pdf_report(
         quality_text = "Die Datenqualität sollte vor einer abschließenden Interpretation kritisch geprüft werden."
     replicate_conclusion = ""
 
-    if replicate_precision_df is not None and not replicate_precision_df.empty:
-        replicate_conclusion = ""
 
     if replicate_precision_df is not None and not replicate_precision_df.empty:
         replicate_conclusion = (
