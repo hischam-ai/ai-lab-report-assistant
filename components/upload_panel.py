@@ -52,7 +52,15 @@ def show_upload_panel():
         )
         return None
 
+    anzahl_vorher = len(df)
     df = clean_measurement_data(df)
+    anzahl_entfernt = anzahl_vorher - len(df)
+
+    if anzahl_entfernt > 0:
+        st.warning(
+            f"{anzahl_entfernt} Zeile(n) mit fehlenden oder "
+            "ungültigen Messwerten wurden entfernt."
+        )
 
     is_valid, error_message = validate_measurement_data(df)
 
