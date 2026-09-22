@@ -12,3 +12,5 @@ wheels/
 .env
 # Generated reports
 experimentvergleich.pdf
+# macOS files
+.DS_Store
