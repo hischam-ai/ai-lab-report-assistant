@@ -45,3 +45,6 @@ Messdaten, Qualitätsbewertung und ein zusammenfassendes Fazit.
 
 Wenn Wiederholungsmessungen vorhanden sind, wird zusätzlich
 die Präzision der Replikate dargestellt.
+## Einblick in die App
+
+![Michaelis-Menten-Kurve mit Messdaten und Fit](Bilder/michaelis-menten-kurve.png)
