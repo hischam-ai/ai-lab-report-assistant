@@ -446,10 +446,10 @@ def create_pdf_report(
 
     if replicate_precision_df is not None and not replicate_precision_df.empty:
         replicate_conclusion = (
-            "Die Replikat-Analyse zeigt erhöhte Streuungen bei einzelnen "
-            "Substratkonzentrationen. Die Reproduzierbarkeit dieser Messungen "
-            "sollte daher überprüft und gegebenenfalls durch weitere "
-            "Wiederholungsmessungen verbessert werden. "
+        "Die Replikat-Analyse zeigt die Streuung der "
+        "Wiederholungsmessungen bei den einzelnen "
+        "Substratkonzentrationen. Die zugehörigen CV-Werte "
+        "sind in der Tabelle zur Replikat-Präzision aufgeführt. "
         )
 
     conclusion_text = (
