@@ -20,9 +20,13 @@ def clean_measurement_data(df):
 
     return df
 
-
+    
+    
 def validate_measurement_data(df):
     """Prüft die bereinigten Messdaten auf grundlegende Fehler."""
+
+    if df.empty:
+        return False, "Die Excel-Datei enthält keine gültigen Messwerte."
 
     if (df["Substrat"] < 0).any():
         return False, "Die Substratkonzentration darf keine negativen Werte enthalten."
