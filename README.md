@@ -1,50 +1,65 @@
 # LabMind AI – Lab Report Assistant
 
-Eine Streamlit-App zur Auswertung von Enzymkinetik-Messdaten nach Michaelis-Menten.
+LabMind AI ist eine Streamlit-Anwendung zur automatisierten Auswertung von Enzymkinetik-Messdaten nach dem Michaelis-Menten-Modell.
 
-Die App liest Excel-Messdaten ein, berechnet kinetische Parameter, visualisiert die Ergebnisse und erstellt einen PDF-Laborbericht.
+Die App liest Messdaten aus Excel-Dateien ein, berechnet kinetische Parameter, visualisiert die Ergebnisse, bewertet die Datenqualität und erstellt einen strukturierten PDF-Laborbericht.
 
-## Projekt starten
+## Funktionen
 
-Voraussetzung: Python und `uv` sind installiert.
-
-```bash
-uv sync
-uv run streamlit run main.py
-```
+- Berechnung von Vmax, Km und R²
+- Michaelis-Menten-Kurve mit Messdaten und Fit
+- Lineweaver-Burk-Darstellung
+- Bewertung der Datenqualität
+- Darstellung der Parameterunsicherheit
+- Analyse von Wiederholungsmessungen (Replikaten)
+- Berechnung von Mittelwert, Standardabweichung und CV
+- Validierung und Bereinigung hochgeladener Messdaten
+- KI-gestützte Interpretation der Messergebnisse
+- Automatische Erstellung eines PDF-Laborberichts
 
 ## Messdaten
 
-Die Excel-Datei benötigt zwei Spalten:
+Die Excel-Datei benötigt die beiden Spalten:
 
 - `Substrat`
 - `Geschwindigkeit`
 
-In der App kann eine passende Excel-Vorlage heruntergeladen werden.
+Für eine Auswertung werden mindestens vier gültige Messpunkte und mindestens zwei unterschiedliche Substratkonzentrationen benötigt.
+
+Ungültige oder fehlende Messwerte werden erkannt und beim Einlesen entsprechend behandelt.
+
+Eine passende Excel-Vorlage kann direkt in der App heruntergeladen werden.
 
 ## Testdaten
 
-Im Ordner `testdaten/` liegt eine Excel-Datei mit Wiederholungsmessungen:
+Im Ordner `testdaten/` befindet sich unter anderem eine Testdatei mit Wiederholungsmessungen:
 
 `testdaten/mit_replikaten.xlsx`
 
-## Funktionen
-
-- Michaelis-Menten-Auswertung mit Berechnung von Vmax, Km und R²
-- Michaelis-Menten-Kurve und Lineweaver-Burk-Darstellung
-- Bewertung der Datenqualität
-- Analyse von Wiederholungsmessungen (Replikaten) mit CV-Werten
-- Darstellung der Parameterunsicherheit
-- KI-gestützte Interpretation der Messergebnisse
-- Erstellung eines PDF-Laborberichts
+Damit können die Michaelis-Menten-Auswertung und die Replikat-Analyse direkt getestet werden.
 
 ## PDF-Bericht
 
-Der PDF-Bericht enthält die kinetischen Parameter, Diagramme,
-Messdaten, Qualitätsbewertung und ein zusammenfassendes Fazit.
+Der automatisch erzeugte PDF-Bericht enthält unter anderem:
 
-Wenn Wiederholungsmessungen vorhanden sind, wird zusätzlich
-die Präzision der Replikate dargestellt.
-## Einblick in die App
+- kinetische Parameter
+- Parameterunsicherheit
+- Michaelis-Menten-Kurve
+- Lineweaver-Burk-Darstellung
+- verwendete Messdaten
+- Bewertung der Datenqualität
+- zusammenfassendes Fazit
 
-![Michaelis-Menten-Kurve mit Messdaten und Fit](Bilder/michaelis-menten-kurve.png)
+Wenn Wiederholungsmessungen vorhanden sind, enthält der Bericht zusätzlich eine Analyse der Replikat-Präzision mit CV-Werten.
+
+## Projekt starten
+
+Voraussetzungen:
+
+- Python
+- `uv`
+
+Abhängigkeiten installieren:
+
+```bash
+uv sync
